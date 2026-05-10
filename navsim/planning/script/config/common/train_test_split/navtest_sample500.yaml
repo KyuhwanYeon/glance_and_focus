@@ -1,0 +1,4 @@
+defaults:
+  - scene_filter: navtest_sample500
+
+data_split: test

@@ -1,0 +1,180 @@
+# Asset catalogue for scenario synthesis.
+#
+# Each entry under `assets` is one calibrated PLY that the compositor can
+# consume. Keys:
+#   ply_path:                 absolute path to gaussians.ply
+#   scale_m:                  uniform scale (= max real-world dimension in meters,
+#                             since asset-harvester normalizes the PLY so the
+#                             longest object dim ≈ 1 in PLY coords)
+#   intrinsic_yaw_offset_deg: rotation around the asset's local Y-up axis to
+#                             apply BEFORE ego-frame yaw, so that face_ego yaw
+#                             actually puts the asset's "front" toward ego.
+#                             Calibrated by inspecting yaw_grid renders.
+#   clusters:                 which scenario-cluster pools this asset can serve.
+#
+# The `clusters` map at the bottom is the inverse view: pick a cluster,
+# get the eligible asset names. Used by dump_scenario_spec.py once it
+# learns to read this file (TODO).
+
+assets:
+  # ── Pedestrians (rectified_AV_objects, NCore-format inference) ─────────
+  ped_back_red:
+    ply_path: /workspace/CoachDrive/external/asset-harvester/outputs/harvesting/VRU_pedestrians/723ce847bf6b1671/gaussians.ply
+    scale_m: 1.911
+    intrinsic_yaw_offset_deg: 180   # natural capture is back-toward-camera
+    clusters: [pedestrian, ego_lane_blocking, ego_lane_swerve, carpark_edge]
+    notes: "Adult, red plaid jacket + backpack. Original PoC asset."
+
+  ped_small:
+    ply_path: /workspace/CoachDrive/external/asset-harvester/outputs/harvesting/VRU_pedestrians/0d7b602f2da8c364/gaussians.ply
+    scale_m: 1.72
+    intrinsic_yaw_offset_deg: 0     # naturally faces camera
+    clusters: [pedestrian, ego_lane_blocking, ego_lane_swerve, child_substitute]
+    notes: "Smallest pedestrian (1.72 m). Standin for child class until we generate one."
+
+  ped_neutral:
+    ply_path: /workspace/CoachDrive/external/asset-harvester/outputs/harvesting/VRU_pedestrians/c2d728e02d4d11cc/gaussians.ply
+    scale_m: 1.74
+    intrinsic_yaw_offset_deg: 0     # TODO calibrate
+    clusters: [pedestrian]
+    notes: "Third pedestrian — yaw not formally calibrated, default 0."
+
+  # ── Erratic / unusual humanoids (OOD inference) ────────────────────────
+  ped_zombie_a:
+    ply_path: /workspace/CoachDrive/external/asset-harvester/outputs/harvesting_ood/589ea10f5ec8eb9f/gaussians.ply
+    scale_m: 1.85
+    intrinsic_yaw_offset_deg: 0     # TODO calibrate
+    clusters: [erratic_pedestrian]
+    notes: "Realistic zombie. Useful for unusual-pedestrian cluster."
+
+  ped_zombie_b:
+    ply_path: /workspace/CoachDrive/external/asset-harvester/outputs/harvesting_ood/71b0c1b1bfc1a32f/gaussians.ply
+    scale_m: 1.80
+    intrinsic_yaw_offset_deg: 0     # TODO calibrate
+    clusters: [erratic_pedestrian]
+
+  ped_soldier:
+    ply_path: /workspace/CoachDrive/external/asset-harvester/outputs/harvesting_ood/bade95406ca586d1/gaussians.ply
+    scale_m: 1.95
+    intrinsic_yaw_offset_deg: 0     # TODO calibrate
+    clusters: [erratic_pedestrian, special_pedestrian]
+    notes: "Gorilla in cargo pants — quirky chimera, useful for OOD ped variation."
+
+  ped_mascot_duck:
+    ply_path: /workspace/CoachDrive/external/asset-harvester/outputs/harvesting_ood/049d71efa8dc0eed/gaussians.ply
+    scale_m: 1.80
+    intrinsic_yaw_offset_deg: 0     # calibrated — beak/face toward camera at 0
+    clusters: [erratic_pedestrian]
+
+  ped_mascot_bear:
+    ply_path: /workspace/CoachDrive/external/asset-harvester/outputs/harvesting_ood/f682bfe39d811a5b/gaussians.ply
+    scale_m: 1.90
+    intrinsic_yaw_offset_deg: 0     # TODO calibrate
+    clusters: [erratic_pedestrian]
+
+  # ── Animals (OOD inference) ────────────────────────────────────────────
+  wolf:
+    ply_path: /workspace/CoachDrive/external/asset-harvester/outputs/harvesting_ood/30e67ba746f808b1/gaussians.ply
+    scale_m: 1.5     # body length
+    intrinsic_yaw_offset_deg: 0
+    clusters: [animal]
+    notes: "Wolf, side view in PLY → good for road-crossing pose."
+
+  bear:
+    ply_path: /workspace/CoachDrive/external/asset-harvester/outputs/harvesting_ood/a2b649d50b7d940d/gaussians.ply
+    scale_m: 2.0     # standing height
+    intrinsic_yaw_offset_deg: 0
+    clusters: [animal]
+    notes: "Bipedal black bear. Faces camera at yaw=0."
+
+  lion:
+    ply_path: /workspace/CoachDrive/external/asset-harvester/outputs/harvesting_ood/877b6dc4b238cdaa/gaussians.ply
+    scale_m: 2.2
+    intrinsic_yaw_offset_deg: 0     # TODO calibrate
+    clusters: [animal]
+
+  elephant:
+    ply_path: /workspace/CoachDrive/external/asset-harvester/outputs/harvesting_ood/499dc6148e690d08/gaussians.ply
+    scale_m: 6.0
+    intrinsic_yaw_offset_deg: 0     # TODO calibrate
+    clusters: [animal]
+    notes: "Large — 6m. Probably won't fit alley scene; reserve for wider scenes."
+
+  # ── Construction / debris (OOD inference) ──────────────────────────────
+  cone:
+    ply_path: /workspace/CoachDrive/external/asset-harvester/outputs/harvesting_ood/983a4222941e33d6/gaussians.ply
+    scale_m: 0.8
+    intrinsic_yaw_offset_deg: 0     # rotationally symmetric
+    clusters: [construction, debris]
+    notes: "Standard orange traffic cone. Cluster small groups for construction."
+
+  dumpster:
+    ply_path: /workspace/CoachDrive/external/asset-harvester/outputs/harvesting_ood/71412338199395ec/gaussians.ply
+    scale_m: 3.0     # length
+    intrinsic_yaw_offset_deg: 90    # long side faces camera
+    clusters: [debris, construction]
+    notes: "Green commercial dumpster. Spans most of an alley width."
+
+  # ── Wrecked vehicles (OOD inference) ───────────────────────────────────
+  wrecked_sedan:
+    ply_path: /workspace/CoachDrive/external/asset-harvester/outputs/harvesting_ood/8ed3a089ee8ebdf4/gaussians.ply
+    scale_m: 4.5
+    intrinsic_yaw_offset_deg: 0     # calibrated — smashed front bumper toward camera
+    clusters: [debris, special_vehicle]
+    notes: "Crashed sedan. Static obstacle / cut-in target."
+
+  burnt_truck:
+    ply_path: /workspace/CoachDrive/external/asset-harvester/outputs/harvesting_ood/aee21dc7b1d54773/gaussians.ply
+    scale_m: 5.5
+    intrinsic_yaw_offset_deg: 90    # TODO calibrate
+    clusters: [debris, special_vehicle]
+
+  burning_suv:
+    ply_path: /workspace/CoachDrive/external/asset-harvester/outputs/harvesting_ood/1237653548ce8a52/gaussians.ply
+    scale_m: 4.7
+    intrinsic_yaw_offset_deg: 235   # 3/4 view — side panel + flames + slight rear
+    clusters: [debris, special_vehicle]
+    notes: "SUV engulfed in flames; side-on so the fire/wreckage reads in the camera."
+
+  cone_cluster3:
+    ply_path: /workspace/CoachDrive/external/asset-harvester/outputs/synthetic/cone_cluster3/gaussians.ply
+    scale_m: 0.8
+    intrinsic_yaw_offset_deg: 0    # rotationally symmetric (matches single cone)
+    clusters: [construction, debris]
+    notes: "Three cones merged at +/-0.7m lateral offsets from the asset center."
+
+  # ── Vehicles (rectified_AV_objects, for cut-ins / parked) ──────────────
+  vehicle_sedan_a:
+    ply_path: /workspace/CoachDrive/external/asset-harvester/outputs/harvesting/consumer_vehicles/c3d2c4c995ce127c/gaussians.ply
+    scale_m: 4.23
+    intrinsic_yaw_offset_deg: 0     # calibrated — Tesla front toward camera
+    clusters: [vehicle, cut_in]
+
+  vehicle_sedan_b:
+    ply_path: /workspace/CoachDrive/external/asset-harvester/outputs/harvesting/consumer_vehicles/382fee4aea8819ce/gaussians.ply
+    scale_m: 4.47
+    intrinsic_yaw_offset_deg: 0     # TODO calibrate
+    clusters: [vehicle, cut_in]
+
+  vehicle_truck:
+    ply_path: /workspace/CoachDrive/external/asset-harvester/outputs/harvesting/consumer_vehicles/f32727777c346318/gaussians.ply
+    scale_m: 5.76
+    intrinsic_yaw_offset_deg: 0     # TODO calibrate
+    clusters: [vehicle, cut_in, special_vehicle]
+
+
+# ── Cluster → eligible asset pool ─────────────────────────────────────────
+# Used by the scenario generator (TODO) to pick assets per cluster name.
+# Asset selection within a cluster is uniform random by default.
+clusters:
+  ego_lane_blocking:    [ped_back_red, ped_small]
+  ego_lane_swerve:      [ped_back_red, ped_small]
+  carpark_edge:         [ped_back_red, ped_small]
+  pedestrian:           [ped_back_red, ped_small, ped_neutral]
+  erratic_pedestrian:   [ped_zombie_a, ped_zombie_b, ped_soldier, ped_mascot_duck, ped_mascot_bear]
+  animal:               [wolf, bear, lion, elephant]
+  construction:         [cone, dumpster]
+  debris:               [cone, dumpster, wrecked_sedan, burnt_truck]
+  special_vehicle:      [vehicle_truck, burnt_truck, wrecked_sedan]
+  cut_in:               [vehicle_sedan_a, vehicle_sedan_b, vehicle_truck]
+  child_substitute:     [ped_small]
