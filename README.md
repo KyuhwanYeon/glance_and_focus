@@ -1,6 +1,8 @@
 # Glance and Focus: Anomaly-Gated VLM Scoring for End-to-End Autonomous Driving
 
 
+
+
 ## Assets
 
 
@@ -97,9 +99,6 @@ python scripts/scenario_synth/derive_cascade.py --tau 0.07 --window 9
 
 # Per-policy collision-rate analysis (baseline / always_on / cascade)
 python scripts/scenario_synth/collision_analysis.py
-
-# τ sweep
-python scripts/scenario_synth/cascade_tau_sweep.py
 ```
 
 ## Configurable knobs
@@ -110,7 +109,6 @@ python scripts/scenario_synth/cascade_tau_sweep.py
 | `--ego_half_width_m H` | rerank | 1.0 | Minkowski tube (~vehicle half-width) |
 | `--lambda_penalty λ` | rerank | 8.0 | soft-cost weight |
 | `--risk_threshold τ_risk` | rerank | 0.5 | hard-veto threshold for VLM risk |
-| `--tau τ_anom` | `run_anomaly_cascade_gate.py` | 0.084 | anomaly gate threshold |
 | `--mode mix\|exclude_only` | rerank | exclude_only | how soft + hard combine |
 
 ## Citation / dependencies

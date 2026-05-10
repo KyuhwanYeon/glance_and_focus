@@ -1,0 +1,32 @@
+{
+  "scenario": "boston_03",
+  "variant": "animal_bear__center",
+  "frame_idx": 82,
+  "token": "7f00cbbc74695c32",
+  "speed_mps": 0.4775513008026737,
+  "latency_ms": 1887.4726295471191,
+  "image_size": [
+    1920,
+    1080
+  ],
+  "raw_response": "```json\n{\"detections\": [{\"label\": \"bear\", \"bbox\": [479, 489, 511, 623], \"risk\": 0.7, \"reason\": \"The bear is standing in the middle of the road, directly in the ego vehicle's path, obstructing the planned straight movement and creating a collision risk.\"}]}\n```",
+  "areas": [
+    {
+      "label": "bear",
+      "risk": 0.7,
+      "reason": "The bear is standing in the middle of the road, directly in the ego vehicle's path, obstructing the planned straight movement and creating a collision risk.",
+      "bbox_pixels": [
+        919,
+        528,
+        981,
+        672
+      ],
+      "bbox_norm": [
+        479.0,
+        489.0,
+        511.0,
+        623.0
+      ]
+    }
+  ]
+}
