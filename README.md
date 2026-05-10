@@ -1,11 +1,11 @@
 # Glance and Focus: Anomaly-Gated VLM Scoring for End-to-End Autonomous Driving
 
+![Cascade demo — strip_04 / animal_bear__center](assets/cascade_demo.gif)
 
-
+* Anomaly-Gated VLM scoring on a synthetic hazard scenario. 
+* Please see demo.ipynb
 
 ## Assets
-
-
 
 
 
@@ -100,16 +100,6 @@ python scripts/scenario_synth/derive_cascade.py --tau 0.07 --window 9
 # Per-policy collision-rate analysis (baseline / always_on / cascade)
 python scripts/scenario_synth/collision_analysis.py
 ```
-
-## Configurable knobs
-
-| Knob | Where | Default | Effect |
-|---|---|---|---|
-| `--radius_m R` | `rerank_predictions_with_vlm.py` | 5.0 | soft-falloff radius of risk polygons |
-| `--ego_half_width_m H` | rerank | 1.0 | Minkowski tube (~vehicle half-width) |
-| `--lambda_penalty λ` | rerank | 8.0 | soft-cost weight |
-| `--risk_threshold τ_risk` | rerank | 0.5 | hard-veto threshold for VLM risk |
-| `--mode mix\|exclude_only` | rerank | exclude_only | how soft + hard combine |
 
 ## Citation / dependencies
 
